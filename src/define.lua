@@ -52,16 +52,26 @@ return function(l)
     user.move = arg.m
     user.strafe = arg.s
     user.angle = arg.a
+    return {x=user.x,y=user.x}
   end)
 
   -- Add a way to inform all clients where all players are
   l:addOp('p')
   -- Create a table containing the name, x and y of each user
   l:addProcessOnServer('p',function(self,peer,arg,storage)
+    local user = self:getUser(peer)
     local info = {}
     for i,v in pairs(self:getUsers()) do
       if v.x and v.y then
-        table.insert(info,{name=v.name,m=v.move,s=v.strafe,a=v.angle,x=v.x,y=v.y})
+        table.insert(info,{
+          name=v.name,
+          m=v.move,
+          s=v.strafe,
+          a=v.angle,
+          x=v.x,
+          y=v.y,
+          c=v == user and true or nil,
+        })
       end
     end
     -- Return it to the requester

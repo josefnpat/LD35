@@ -26,29 +26,35 @@ function server.stop()
 end
 
 function server.draw()
-  love.graphics.print(
-    "Server hosting on: " ..
-      server_data.lovernet:getIp()..":"..server_data.lovernet:getPort())
 
-  if client_data then
+  if debug_mode then
 
-    local offx = love.graphics.getWidth()/2-32
-    local offy = love.graphics.getHeight()/2-32
+    love.graphics.print(
+      "Server hosting on: " ..
+        server_data.lovernet:getIp()..":"..server_data.lovernet:getPort())
 
-    for i,v in pairs(map) do
-      love.graphics.rectangle("line",(v.x-0.5)*32+offx,(v.y-0.5)*32+offy,32,32)
-    end
+    if client_data then
 
-    for i,v in pairs(client_data.lovernet:getCache('p')) do
-      love.graphics.print(v.name.."["..v.m..","..v.s..","..v.a.."]",
-        v.x*32+16+2+offx,
-        v.y*32-love.graphics.getFont():getHeight()/2+offy
-      )
-      love.graphics.circle("line",v.x*32+offx,v.y*32+offy,16)
-      love.graphics.arc("line",v.x*32+offx,v.y*32+offy,16,v.a+0.2,v.a-0.2)
+      local offx = love.graphics.getWidth()/2-32
+      local offy = love.graphics.getHeight()/2-32
+
+      for i,v in pairs(map) do
+        love.graphics.rectangle("line",(v.x-0.5)*32+offx,(v.y-0.5)*32+offy,32,32)
+      end
+
+      for i,v in pairs(client_data.lovernet:getCache('p')) do
+        love.graphics.print(v.name.."["..v.m..","..v.s..","..v.a.."]",
+          v.x*32+16+2+offx,
+          v.y*32-love.graphics.getFont():getHeight()/2+offy
+        )
+        love.graphics.circle("line",v.x*32+offx,v.y*32+offy,16)
+        love.graphics.arc("line",v.x*32+offx,v.y*32+offy,16,v.a+0.2,v.a-0.2)
+      end
+
     end
 
   end
+
 end
 
 function server.update(dt)

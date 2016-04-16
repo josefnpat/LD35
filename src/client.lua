@@ -2,15 +2,47 @@ local client = {}
 
 function client.start(args)
 
+  client_data = {}
+
+  client_data.bg = love.graphics.newImage("assets/bg.png")
+  client_data.bg:setFilter("nearest")
+
+  client_data.vividcast = require "vividcast"
+
+  client_data.level = client_data.vividcast.level.new()
+  client_data.level:setMapCallback(function(x,y)
+    for i,v in pairs(map) do
+      if v.x == x and v.y == y then
+        return 1
+      end
+    end
+    return 0
+  end)
+  client_data.level:setRaycastRange( 100 )
+  client_data.level:setRaycastResolution(1/16)
+
+  local tile = client_data.vividcast.tile.new()
+  tile:setTexture(love.graphics.newImage("assets/walls/wall.png"))
+  tile:getTexture():setFilter("nearest","nearest")
+  client_data.level:addTile{type=1,tile=tile}
+
+  client_data.player = client_data.vividcast.entity.new()
+  client_data.player:setX(0)
+  client_data.player:setY(0)
+  client_data.player:setAngle(0)
+
+  client_data.level:addEntity(client_data.player)
+
+  client_data.level:setPlayer(client_data.player)
+
   music.menu:stop()
   music.game:play()
-
-  client_data = {}
 
   client_data.name = args.name or "Peasant"..math.random(1000,9999)
 
   client_data.move,client_data.strafe,client_data.angle = 0,0,0
   args.port = "3535"
+  args.transmitRate = 1/24
 
   -- Connects to localhost by default
   client_data.lovernet = lovernetlib.new(args)
@@ -49,7 +81,7 @@ function client.update(dt)
 
   local offset = love.mouse.getX() - love.graphics.getWidth() / 2
   local scale = (offset / (love.graphics.getWidth() / 2)) * 20
-  use_mouse = true
+  use_mouse = love.window.hasFocus()
   if use_mouse then
     client_data.angle = client_data.angle + scale*dt
     love.mouse.setX(love.graphics.getWidth() / 2)
@@ -78,6 +110,19 @@ function client.update(dt)
     })
   end
 
+  if client_data.lovernet:getCache("p") then
+    for i,v in pairs(client_data.lovernet:getCache("p")) do
+      if v.c then --if current player
+        client_data.player:setX(v.x+0.4 or 0)
+        client_data.player:setY(v.y+0.4 or 0)
+        client_data.player:setAngle(v.a)
+      end
+    end
+  end
+
+
+
+
   -- TODO: add delay timer
   -- Request a player list
   if not client_data.lovernet:hasData('p') then
@@ -105,6 +150,8 @@ function client.draw()
 
   else
 
+    love.graphics.draw(client_data.bg,0,0,0,scale,scale)
+    client_data.level:draw(0,0,64*scale,64*scale,scale)
 
   end
 

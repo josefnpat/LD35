@@ -91,12 +91,21 @@ function love.draw()
     end
   end
 
-  if server_data then server.draw() end
   if client_data then client.draw() end
+  if server_data then server.draw() end
+
+  if debug_mode then
+    love.graphics.printf(love.timer.getFPS(),0,0,
+      love.graphics.getWidth(),"right")
+  end
 
 end
 
 function love.keypressed(key)
+
+  if key == "`" then
+    debug_mode = not debug_mode
+  end
 
   if not client_data then
 
@@ -153,6 +162,11 @@ function love.mousepressed(x,y,button)
 end
 
 function love.update(dt)
+
+  if debug_mode then
+    require("lovebird").update()
+  end
+
   if client_data then client.update(dt) end
   if server_data then server.update(dt) end
 end
