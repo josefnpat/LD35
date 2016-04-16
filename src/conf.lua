@@ -7,18 +7,6 @@ conway = false
 function love.conf(t)
 
   t.version = "0.10.1"
-  t.modules.audio = false
-
-  for _,v in pairs(arg) do
-    if v == "--headless" or v == "-s" then
-      headless = true
-    end
-    if v == "--confetti" or v == "-c" then
-      confetti = true
-    elseif v == '--conway' then
-      conway = true
-    end
-  end
 
   if headless then
     t.console = true

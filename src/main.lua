@@ -8,6 +8,17 @@ function love.load()
 
   if headless then server.start() return end
 
+  music = {
+    menu = love.audio.newSource("assets/music/menu.ogg"),
+    game = love.audio.newSource("assets/music/game.ogg"),
+  }
+
+  for _,song in pairs(music) do
+    song:setLooping(true)
+  end
+
+  music.menu:play()
+
   client = require "client"
 
   math.randomseed(os.time())
@@ -28,6 +39,8 @@ function love.load()
       name = function() return "Connect to " .. (demo_ip and "remote" or "localhost") .. " server" end,
       action = function()
         client.start{ip=demo_ip,name=demo_name}
+        music.menu:stop()
+        music.game:play()
       end,
     },
     {

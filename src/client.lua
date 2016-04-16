@@ -2,6 +2,9 @@ local client = {}
 
 function client.start(args)
 
+  music.menu:stop()
+  music.game:play()
+
   client_data = {}
 
   client_data.name = args.name or "Peasant"..math.random(1000,9999)
@@ -29,6 +32,9 @@ end
 function client.stop()
   client_data.lovernet:disconnect()
   client_data = nil
+
+  music.game:stop()
+  music.menu:play()
 end
 
 function client.update(dt)
