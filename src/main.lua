@@ -1,5 +1,7 @@
 function love.load()
 
+  love.mouse.setVisible( false )
+
   map = require "map"
 
   lovernetlib = require("lovernet")
