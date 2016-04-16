@@ -18,7 +18,7 @@ function love.conf(t)
     t.modules.graphics = false
     t.modules.window = false
   else
-    t.window.title = "Dracul"
+    t.window.title = "Dracul64"
     t.window.width = 64*scale
     t.window.height = 64*scale
 

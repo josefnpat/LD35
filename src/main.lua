@@ -84,7 +84,7 @@ function love.draw()
     love.graphics.setColor(255,255,255)
 
     local offset = (love.graphics.getHeight() - #options*24)/2
-    love.graphics.printf("LD35 DRACUL",0,offset-24,love.graphics.getWidth(),"center")
+    love.graphics.printf("DRACUL64",0,offset-24,love.graphics.getWidth(),"center")
     for i,v in pairs(options) do
       local name = i == current_option and ">>> " .. v.name() .. " <<<" or v.name()
       love.graphics.printf(name,0,i*24+offset,love.graphics.getWidth(),"center")

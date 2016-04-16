@@ -1,7 +1,7 @@
 #!/bin/bash
 
 SRC="src"
-NAME="dracul"
+NAME="dracul64"
 VERSION=0.10.1
 
 `sh ./gengit.sh $SRC`
