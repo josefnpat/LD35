@@ -16,7 +16,7 @@ function love.draw()
     local x = (i-1)*scale*64
     local y = 64*scale
     love.graphics.rectangle("line",x,y,64*scale,64*scale)
-    love.graphics.draw(sheet,sprites.walk[animindex][i],x,y,
+    love.graphics.draw(sheet,sprites.walk[i][animindex],x,y,
       0,scale,scale)
   end
 

@@ -6,10 +6,10 @@ for i = 1,8 do
 end
 
 sprites.walk = {}
-for i = 1,4 do
+for i = 1,8 do
   sprites.walk[i] = {}
-  for j = 1,8 do
-    sprites.walk[i][j] = love.graphics.newQuad((j-1)*64,i*64,64,64,1024,1024)
+  for j = 1,4 do
+    sprites.walk[i][j] = love.graphics.newQuad((i-1)*64,j*64,64,64,1024,1024)
   end
 end
 
