@@ -7,8 +7,8 @@ function server.start()
   server_data.lovernet = lovernetlib.new({type=lovernetlib.mode.server,port=3535})
 
   server_data.lovernet._reset_player = function(user)
-    user.x = math.random(-4,4)
-    user.y = math.random(-4,4)
+    user.x = math.random(-3,3)
+    user.y = math.random(-3,3)
     user.angle = math.random()*math.pi*2
     user.hp = 10
     user.dead = nil
