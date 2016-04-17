@@ -172,6 +172,12 @@ function love.textinput(letter)
   end
 end
 
+function love.mousepressed(x,y,button)
+  if client_data then
+    client.mousepressed(x,y,button)
+  end
+end
+
 function love.update(dt)
 
   if debug_mode then

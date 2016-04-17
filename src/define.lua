@@ -70,7 +70,8 @@ return function(l)
           a=v.angle,
           x=v.x,
           y=v.y,
-          c=v == user and true or nil,
+          c = v == user and true or nil,
+          hp = v == user and (user.hp or max_health) or nil,
         })
       end
     end
@@ -90,6 +91,21 @@ return function(l)
   -- Provide an empty table by default when a client requests the players
   l:addDefaultOnClient('p',function(self,peer,arg,storage)
     return {}
+  end)
+
+  l:addOp('s')
+  -- shoot
+  l:addProcessOnServer('s',function(self,peer,arg,storage)
+    local user = self:getUser(peer)
+    storage = storage or {}
+    storage.bullets = storage.bullets or {}
+    table.insert(storage.bullets,{
+      age = 1,
+      x=user.x,
+      y=user.y,
+      angle=user.angle,
+      owner=user,
+    })
   end)
 
 end

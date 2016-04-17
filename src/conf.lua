@@ -1,5 +1,6 @@
 headless = false
 scale = 10
+max_health = 10
 
 function love.conf(t)
 

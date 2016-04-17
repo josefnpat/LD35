@@ -145,6 +145,7 @@ function client.update(dt)
 
       if v.c then --if current player
 
+        client_data.hp = v.hp
         client_data.player:setX(v.x+0.4 or 0)
         client_data.player:setY(v.y+0.4 or 0)
         client_data.player:setAngle(v.a)
@@ -208,8 +209,15 @@ function client.draw()
       client_data.level:draw(0,0,64*scale,64*scale,scale)
     end
 
+    love.graphics.printf("HP:"..(client_data.hp or "?"),0,love.graphics.getHeight()-32,
+      love.graphics.getWidth(),"right")
+
   end
 
+end
+
+function client.mousepressed(x,y,button)
+  client_data.lovernet:pushData('s')
 end
 
 return client

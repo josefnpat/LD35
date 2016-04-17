@@ -51,14 +51,59 @@ function server.draw()
         love.graphics.arc("line",v.x*32+offx,v.y*32+offy,16,v.a+0.2,v.a-0.2)
       end
 
+      for i,v in pairs(server_data.lovernet:getStorage().bullets or {}) do
+        love.graphics.circle("line",v.x*32+offx,v.y*32+offy,4)
+        love.graphics.arc("line",v.x*32+offx,v.y*32+offy,16,v.angle+0.2,v.angle-0.2)
+      end
+
     end
 
   end
 
 end
 
+local distance = function(a,b)
+  return math.sqrt( (a.x - b.x)^2 + (a.y - b.y)^2 )
+end
+
 function server.update(dt)
   server_data.lovernet:update(dt)
+
+  local speed = 10
+
+  local bullets = server_data.lovernet:getStorage().bullets or {}
+
+  for ibullet,bullet in pairs(bullets) do
+    bullet.x = bullet.x + math.cos(bullet.angle)*speed*dt
+    bullet.y = bullet.y + math.sin(bullet.angle)*speed*dt
+
+    bullet.age = bullet.age - dt
+
+    local hit_wall = false
+    local ix = math.floor(bullet.x+0.5)
+    local iy = math.floor(bullet.y+0.5)
+    for _,tile in pairs(map) do
+      if tile.x == ix and tile.y == iy then
+        hit_wall = true
+        break
+      end
+    end
+
+    local hit_player = false
+    for _,user in pairs(server_data.lovernet:getUsers()) do
+      if bullet.owner ~= user then
+        if distance(bullet,user) < 0.4 then
+          hit_player = true
+          user.hp = (user.hp or max_health) - 1
+          break
+        end
+      end
+    end
+
+    if bullet.age <= 0 or hit_wall or hit_player then
+      table.remove(bullets,ibullet)
+    end
+  end
 
   for _,user in pairs(server_data.lovernet:getUsers()) do
     if user.x and user.y then
