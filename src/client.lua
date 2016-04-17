@@ -152,15 +152,20 @@ function client.update(dt)
           local dev = {}
           dev.ent = client_data.vividcast.entity.new()
           dev.ent:setTexture(function(this,angle)
-            return client_data.sprites.stand[calc_direction(angle)]
+            if this._walking then
+              return client_data.sprites.walk[calc_direction(angle)][1]
+            else
+              return client_data.sprites.stand[calc_direction(angle)]
+            end
           end)
           client_data.level:addEntity(dev.ent)
           client_data.users[v.name] = dev
           -- TODO: add move and strafe
         end
-        client_data.users[v.name].ent:setX(v.x)
-        client_data.users[v.name].ent:setY(v.y)
+        client_data.users[v.name].ent:setX(v.x+0.4)
+        client_data.users[v.name].ent:setY(v.y+0.4)
         client_data.users[v.name].ent:setAngle(v.a)
+        client_data.users[v.name].ent._walking = v.m == 1 or v.s == 1
 
       end
 
