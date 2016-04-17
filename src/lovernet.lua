@@ -262,11 +262,13 @@ function lovernet:update(dt)
           self:log("event","Connect: " .. tostring(event.peer).." ["..tostring(user.name).."]")
         elseif event.type == "disconnect" then
           local user = self:getUser(event.peer)
-          self:log("event","Disconnect: " .. tostring(event.peer).." ["..tostring(user.name).."]")
-          self:_removeUser(event.peer)
-          for i,v in pairs(self._peers) do
-            if v == event.peer then
-              table.remove(self._peers,i)
+          if user then
+            self:log("event","Disconnect: " .. tostring(event.peer).." ["..tostring(user.name).."]")
+            self:_removeUser(event.peer)
+            for i,v in pairs(self._peers) do
+              if v == event.peer then
+                table.remove(self._peers,i)
+              end
             end
           end
         elseif event.type == "receive" then
