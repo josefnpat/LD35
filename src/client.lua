@@ -9,6 +9,19 @@ function client.start(args)
 
   client_data.vividcast = require "vividcast"
 
+  local all = love.image.newImageData("assets/sprites/sprites.png")
+
+  local extract = function(quad)
+    local s = love.image.newImageData(64,64)
+    local x,y,w,h = quad:getViewport()
+    s:paste(all,0,0,x,y,w,h)
+    return love.graphics.newImage(s)
+  end
+
+  client_data.sprites = require "assets.sprites.sprites"(extract)
+
+  client_data.sheet = love.graphics.newImage("assets/sprites/sprites.png")
+
   client_data.level = client_data.vividcast.level.new()
   client_data.level:setMapCallback(function(x,y)
     for i,v in pairs(map) do
@@ -30,6 +43,28 @@ function client.start(args)
   client_data.player:setX(0)
   client_data.player:setY(0)
   client_data.player:setAngle(0)
+
+  local extract = function(quad)
+    local s = love.image.newImageData(64,64)
+    local x,y,w,h = quad:getViewport()
+    s:paste(all,0,0,x,y,w,h)
+    return love.graphics.newImage(s)
+  end
+
+  local calc_direction = function(angle)
+    return math.floor(((angle+math.pi/8)/(math.pi*2))*8)%8+1
+  end
+
+  dev = {}
+  dev.ent = client_data.vividcast.entity.new()
+  dev.ent:setX(1)
+  dev.ent:setY(0)
+  dev.ent:setAngle(1)
+  dev.ent:setTexture(function(this,angle)
+    return client_data.sprites.stand[calc_direction(angle)]
+  end)
+
+  client_data.level:addEntity(dev.ent)
 
   client_data.level:addEntity(client_data.player)
 

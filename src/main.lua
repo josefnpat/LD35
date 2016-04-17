@@ -162,7 +162,7 @@ end
 function love.update(dt)
 
   if debug_mode then
-    require("lovebird").update()
+    --require("lovebird").update()
   end
 
   if client_data then client.update(dt) end

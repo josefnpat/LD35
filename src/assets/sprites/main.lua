@@ -1,4 +1,4 @@
-sprites = require "sprites"
+sprites = require "sprites"()
 
 sheet = love.graphics.newImage("sprites.png")
 sheet:setFilter("nearest")
