@@ -68,7 +68,7 @@ function client.start(args)
   music.menu:stop()
   music.game:play()
 
-  client_data.name = args.name or "Peasant"..math.random(1000,9999)
+  client_data.name = args.name or default_username..math.random(1000,9999)
 
   client_data.move,client_data.strafe,client_data.angle = 0,0,0
   args.port = default_port

@@ -2,11 +2,11 @@ headless = false
 scale = 10
 max_health = 10
 default_port = 35350
+default_username = "Clone"
 
 function love.conf(t)
 
   t.version = "0.10.1"
-
 
   for _,v in pairs(arg) do
     if v == "--headless" or v == "-s" then

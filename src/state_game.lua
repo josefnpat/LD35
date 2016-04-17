@@ -34,7 +34,7 @@ function game:enter()
   options = {
     {
       label = "name",
-      name = function() return "Change name: "..(demo_name or "[Peasant]") end,
+      name = function() return "Change name: "..(demo_name or "["..default_username.."]") end,
       action = function()
         demo_name = nil
       end,
