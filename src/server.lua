@@ -12,9 +12,10 @@ function server.start()
       user.x = math.random(-3,3)
       user.y = math.random(-3,3)
       user.angle = math.random()*math.pi*2
-      user.hp = 10
-      user.dead = nil
+      user.hp = max_health
+      user.dead = nil -- respawn timer on server
       user.killed_by = nil
+      user.bullets = 6
     end
 
     server.world = server.bump.newWorld(50)
@@ -124,7 +125,7 @@ function server.update(dt)
   for _,user in pairs(server_data.lovernet:getUsers()) do
 
     if user.hp and user.hp <= 0 then
-      user.dead = user.dead and user.dead - dt or 5
+      user.dead = user.dead and user.dead - dt or 2
       if user.dead <= 0 then
         server_data.lovernet._reset_player(user)
       end

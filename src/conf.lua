@@ -1,6 +1,6 @@
 headless = false
 scale = 10
-max_health = 10
+max_health = 4
 default_port = 35350
 default_username = "CLONE"
 

@@ -77,11 +77,12 @@ return function(l)
           x=v.x,
           y=v.y,
           c = v == user and true or nil,
-          hp = v == user and (user.hp or max_health) or nil,
-          d = user.hp == 0 and true or nil,
+          hp = v == user and (v.hp or max_health) or nil,
+          dead = (v.hp <= 0) and 1 or nil,
           p = v.points or 0,
           k = v.kills or 0,
           d = v.deaths or 0,
+          b = v.bullets or 0,
         })
       end
     end
@@ -107,11 +108,17 @@ return function(l)
   -- shoot
   l:addProcessOnServer('s',function(self,peer,arg,storage)
     local user = self:getUser(peer)
+
     if user.hp > 0 then
+      local age = 0.1
+      if user.bullets > 0 then
+        user.bullets = user.bullets - 1
+        age = 1
+      end
       storage = storage or {}
       storage.bullets = storage.bullets or {}
       table.insert(storage.bullets,{
-        age = 1,
+        age = age,
         x=user.x,
         y=user.y,
         angle=user.angle,

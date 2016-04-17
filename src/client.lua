@@ -158,6 +158,7 @@ function client.update(dt)
       if v.c then --if current player
 
         client_data.hp = v.hp
+        client_data.bullets = v.b
         client_data.player:setX(v.x+0.4 or 0)
         client_data.player:setY(v.y+0.4 or 0)
         client_data.player:setAngle(v.a)
@@ -169,7 +170,10 @@ function client.update(dt)
           local dev = {}
           dev.ent = client_data.vividcast.entity.new()
           dev.ent:setTexture(function(this,angle)
-            if this._walking then
+            if this._dead then
+              local index = math.min(math.floor(this._dead_dt),4)+1
+              return client_data.sprites.death[index]
+            elseif this._walking then
               local index = math.floor(t*4)%#client_data.sprites.walk[1] + 1
               return client_data.sprites.walk[calc_direction(angle)][index]
             else
@@ -184,7 +188,14 @@ function client.update(dt)
         client_data.users[v.name].ent:setY(v.y+0.4)
         client_data.users[v.name].ent:setAngle(v.a)
         client_data.users[v.name].ent._walking = v.m ~= 0 or v.s ~= 0
-
+        if v.dead == 1 then
+          client_data.users[v.name].ent._dead = true
+          client_data.users[v.name].ent._dead_dt = (client_data.users[v.name].ent._dead_dt or 0) + dt*4
+        else
+          print(v.name,"clear")
+          client_data.users[v.name].ent._dead = nil
+          client_data.users[v.name].ent._dead_dt = nil
+        end
       end
 
     end
@@ -219,10 +230,14 @@ function client.draw()
 
     local shootindex = math.floor(client_data.shooting*5)+1
 
-    love.graphics.draw(client_data.weapons,client_data.sprites.weapon_quads[2][shootindex],
+    local weaponindex = client_data.bullets == 0 and 1 or 2
+
+    love.graphics.draw(client_data.weapons,client_data.sprites.weapon_quads[weaponindex][shootindex],
       0,32*scale,0,scale,scale)
 
     love.graphics.print("HP:"..(client_data.hp or "?"),0,0)
+
+    love.graphics.print(string.rep("I",client_data.bullets or 0),0,64*10-10)
 
     if client_data.hp and client_data.hp <= 0 then
       love.graphics.setColor(255,0,0,127)
