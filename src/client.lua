@@ -8,10 +8,15 @@ function client.start(args)
 
   client_data = {}
 
+  client_data.shooting = 0
+
   client_data.bg = love.graphics.newImage("assets/bg.png")
   client_data.bg:setFilter("nearest")
 
   client_data.vividcast = require "vividcast"
+
+  client_data.weapons = love.graphics.newImage("assets/sprites/weapons.png")
+  client_data.weapons:setFilter("nearest")
 
   local all = love.image.newImageData("assets/sprites/sprites.png")
 
@@ -99,6 +104,8 @@ t = 0
 function client.update(dt)
 
   t = t + dt
+
+  client_data.shooting = math.max(0,client_data.shooting-dt*4)
 
   client_data.move = 0
   client_data.move = client_data.move + ( love.keyboard.isDown("w") and 1 or 0 )
@@ -209,6 +216,11 @@ function client.draw()
       client_data.level:draw(0,0,64*scale,64*scale,scale)
     end
 
+    local shootindex = math.floor(client_data.shooting*5)+1
+
+    love.graphics.draw(client_data.weapons,client_data.sprites.weapon_quads[2][shootindex],
+      0,32*scale,0,scale,scale)
+
     love.graphics.printf("HP:"..(client_data.hp or "?"),0,love.graphics.getHeight()-32,
       love.graphics.getWidth(),"right")
 
@@ -217,6 +229,7 @@ function client.draw()
 end
 
 function client.mousepressed(x,y,button)
+  client_data.shooting = 1
   client_data.lovernet:pushData('s')
 end
 
