@@ -2,7 +2,7 @@ headless = false
 scale = 10
 max_health = 10
 default_port = 35350
-default_username = "Clone"
+default_username = "CLONE"
 
 function love.conf(t)
 

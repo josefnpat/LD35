@@ -33,14 +33,7 @@ function game:enter()
 
   options = {
     {
-      label = "name",
-      name = function() return "Change name: "..(demo_name or "["..default_username.."]") end,
-      action = function()
-        demo_name = nil
-      end,
-    },
-    {
-      name = function() return "Connect to " .. (demo_ip and "remote" or "localhost") .. " server" end,
+      name = function() return "CONNECT" end,-- .. (demo_ip and "remote" or "localhost") .. " server" end,
       action = function()
         client.start{ip=demo_ip,name=demo_name}
         music.menu:stop()
@@ -48,16 +41,9 @@ function game:enter()
       end,
     },
     {
-      label = "ip",
-      name = function() return "Change demo server ip: "..(demo_ip or "[localhost]") end,
-      action = function()
-        demo_ip = nil
-      end,
-    },
-    {
       name = function() return server_data and
         --"Stop Server"
-        "Server Hosted" or "Host Server" end,
+        "HOST [UP]" or "HOST" end,
       action = function()
         if server_data then
           --server.stop()
@@ -68,7 +54,25 @@ function game:enter()
       end,
     },
     {
-      name = function() return "Quit" end,
+      label = "name",
+      name = function() return "NAME: "..(demo_name or "["..default_username.."]") end,
+      action = function()
+        demo_name = nil
+      end,
+    },
+    {
+      label = "ip",
+      name = function() return "IP: "..(demo_ip or "[LOCALHOST]") end,
+      action = function()
+        demo_ip = nil
+      end,
+    },
+    {
+      name = function() return "CREDITS" end,
+      action = function() end,
+    },
+    {
+      name = function() return "QUIT" end,
       action = love.event.quit,
     },
   }
@@ -85,22 +89,27 @@ end
 function game:draw()
 
   if not client_data then
-    love.graphics.setColor(255,255,255)
 
-    local offset = (love.graphics.getHeight() - #options*24)/2
-    love.graphics.printf("DRACUL64",0,offset-24,love.graphics.getWidth(),"center")
+    love.graphics.setColor(255,255,255)
+    local fh = love.graphics.getFont():getHeight()*scale
+    local offset = 32
+    love.graphics.print("DRACUL64",0,0)
     for i,v in pairs(options) do
-      local name = i == current_option and ">>> " .. v.name() .. " <<<" or v.name()
-      love.graphics.printf(name,0,i*24+offset,love.graphics.getWidth(),"center")
+      if i == current_option then
+        love.graphics.setColor(255,0,0)
+      else
+        love.graphics.setColor(255,255,255)
+      end
+      love.graphics.print(v.name(),0,i*fh+offset)
     end
   end
+  love.graphics.setColor(255,255,255)
 
   if client_data then client.draw() end
   if server_data then server.draw() end
 
   if fps_mode then
-    love.graphics.printf(love.timer.getFPS(),0,0,
-      love.graphics.getWidth(),"right")
+    love.graphics.print(love.timer.getFPS(),0,0)
   end
 
 end
@@ -168,7 +177,9 @@ end
 
 function game:textinput(letter)
   if options[current_option].label == "name" then
-    demo_name = (demo_name or "" ) .. letter
+    if not demo_name or demo_name:len() < 8 then
+      demo_name = (demo_name or "" ) .. letter
+    end
   elseif options[current_option].label == "ip" then
     demo_ip = (demo_ip or "") .. letter
   end

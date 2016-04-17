@@ -108,6 +108,8 @@ function server.update(dt)
           if user.hp == 0 and not user.killed_by then
             user.killed_by = bullet.owner
             bullet.owner.points = (bullet.owner.points or 0) + 1
+            bullet.owner.kills = (bullet.owner.kills or 0) + 1
+            user.deaths = (user.deaths or 0) + 1
           end
           break
         end

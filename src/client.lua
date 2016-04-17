@@ -204,15 +204,11 @@ function client.draw()
 
   if not client_data.lovernet:isConnectedToServer() then
 
-    love.graphics.printf(
-      "Connecting to "..client_data.lovernet:getIp()..":"..client_data.lovernet:getPort(),
-      0,love.graphics.getHeight()/2,love.graphics.getWidth(),"center")
+    love.graphics.print("CONNECTING:\n"..client_data.lovernet:getIp()..":"..client_data.lovernet:getPort(),0,0)
 
   elseif client_data.lovernet:getCache('version') ~= true then
 
-    love.graphics.printf(
-      client_data.lovernet:getCache('version'),
-      0,love.graphics.getHeight()/2,love.graphics.getWidth(),"center")
+    love.graphics.print(client_data.lovernet:getCache('version'),0,0)
 
   else
 
@@ -226,18 +222,15 @@ function client.draw()
     love.graphics.draw(client_data.weapons,client_data.sprites.weapon_quads[2][shootindex],
       0,32*scale,0,scale,scale)
 
-    love.graphics.printf("HP:"..(client_data.hp or "?"),0,love.graphics.getHeight()-32,
-      love.graphics.getWidth(),"right")
+    love.graphics.print("HP:"..(client_data.hp or "?"),0,0)
 
     if client_data.hp and client_data.hp <= 0 then
-      love.graphics.printf("You are dead. Respawning ...",
-        0,love.graphics.getHeight()/2,
-        love.graphics.getWidth(),"center"
-      )
+      love.graphics.setColor(255,0,0,127)
+      love.graphics.rectangle("fill",0,0,64*scale,64*scale)
     end
 
     if love.keyboard.isDown("tab") and client_data.lovernet:getCache('p') then
-      love.graphics.setColor(0,0,0,127)
+      love.graphics.setColor(0,0,0,191)
       love.graphics.rectangle("fill",0,0,love.graphics.getWidth(),love.graphics.getHeight())
 
       local players = client_data.lovernet:getCache('p')
@@ -247,12 +240,12 @@ function client.draw()
 
       for iuser,user in pairs(players) do
         if user.c then
-          love.graphics.setColor(191,255,191)
+          love.graphics.setColor(0,255,0)
         else
           love.graphics.setColor(255,255,255)
         end
-        love.graphics.print(user.name.." score: "..(user.p or 0),
-          scale*2,scale*2*iuser)
+        love.graphics.print((user.p or 0).."/"..user.k.."/"..user.d.." "..user.name,
+          0,love.graphics.getFont():getHeight()*scale*(iuser-1))
       end
       love.graphics.setColor(255,255,255)
     end

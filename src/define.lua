@@ -53,11 +53,11 @@ return function(l)
     if user.hp > 0 then
       user.move = arg.m
       user.strafe = arg.s
+      user.angle = arg.a
     else
       user.move = 0
       user.strafe = 0
     end
-    user.angle = arg.a
     return {x=user.x,y=user.x}
   end)
 
@@ -80,6 +80,8 @@ return function(l)
           hp = v == user and (user.hp or max_health) or nil,
           d = user.hp == 0 and true or nil,
           p = v.points or 0,
+          k = v.kills or 0,
+          d = v.deaths or 0,
         })
       end
     end
