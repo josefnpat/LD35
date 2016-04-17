@@ -239,7 +239,13 @@ function client.draw()
     if love.keyboard.isDown("tab") and client_data.lovernet:getCache('p') then
       love.graphics.setColor(0,0,0,127)
       love.graphics.rectangle("fill",0,0,love.graphics.getWidth(),love.graphics.getHeight())
-      for iuser,user in pairs(client_data.lovernet:getCache('p')) do
+
+      local players = client_data.lovernet:getCache('p')
+      table.sort(players,function(a,b)
+        return (a.p or 0) > (b.p or 0)
+      end)
+
+      for iuser,user in pairs(players) do
         if user.c then
           love.graphics.setColor(191,255,191)
         else
