@@ -6,21 +6,23 @@ function server.start()
   server_data = {}
   server_data.lovernet = lovernetlib.new({type=lovernetlib.mode.server,port=default_port})
 
-  server_data.lovernet._reset_player = function(user)
-    user.x = math.random(-3,3)
-    user.y = math.random(-3,3)
-    user.angle = math.random()*math.pi*2
-    user.hp = 10
-    user.dead = nil
-  end
-
-  server.world = server.bump.newWorld(50)
-
-  for i,v in pairs(map) do
-    server.world:add({},v.x-0.5,v.y-0.5,1,1)
-  end
-
   if server_data.lovernet then
+
+    server_data.lovernet._reset_player = function(user)
+      user.x = math.random(-3,3)
+      user.y = math.random(-3,3)
+      user.angle = math.random()*math.pi*2
+      user.hp = 10
+      user.dead = nil
+      user.killed_by = nil
+    end
+
+    server.world = server.bump.newWorld(50)
+
+    for i,v in pairs(map) do
+      server.world:add({},v.x-0.5,v.y-0.5,1,1)
+    end
+
     require("define")(server_data.lovernet)
   else
     server_data = nil
@@ -103,6 +105,10 @@ function server.update(dt)
         if distance(bullet,user) < 0.4 then
           hit_player = true
           user.hp = math.max(0, (user.hp or max_health) - 1)
+          if user.hp == 0 and not user.killed_by then
+            user.killed_by = bullet.owner
+            bullet.owner.points = (bullet.owner.points or 0) + 1
+          end
           break
         end
       end

@@ -79,6 +79,7 @@ return function(l)
           c = v == user and true or nil,
           hp = v == user and (user.hp or max_health) or nil,
           d = user.hp == 0 and true or nil,
+          p = v.points or 0,
         })
       end
     end

@@ -236,6 +236,21 @@ function client.draw()
       )
     end
 
+    if love.keyboard.isDown("tab") and client_data.lovernet:getCache('p') then
+      love.graphics.setColor(0,0,0,127)
+      love.graphics.rectangle("fill",0,0,love.graphics.getWidth(),love.graphics.getHeight())
+      for iuser,user in pairs(client_data.lovernet:getCache('p')) do
+        if user.c then
+          love.graphics.setColor(191,255,191)
+        else
+          love.graphics.setColor(255,255,255)
+        end
+        love.graphics.print(user.name.." score: "..(user.p or 0),
+          scale*2,scale*2*iuser)
+      end
+      love.graphics.setColor(255,255,255)
+    end
+
   end
 
 end
