@@ -47,9 +47,9 @@ return function(l)
   -- Store the position of the user in the user data
   l:addProcessOnServer('m',function(self,peer,arg,storage)
     local user = self:getUser(peer)
-    user.x = user.x or math.random(-1,1)
-    user.y = user.y or math.random(-1,1)
-    user.hp = user.hp or 10
+    if user.x == nil and user.y == nil then
+      self._reset_player(user)
+    end
     if user.hp > 0 then
       user.move = arg.m
       user.strafe = arg.s

@@ -6,6 +6,14 @@ function server.start()
   server_data = {}
   server_data.lovernet = lovernetlib.new({type=lovernetlib.mode.server,port=3535})
 
+  server_data.lovernet._reset_player = function(user)
+    user.x = math.random(-4,4)
+    user.y = math.random(-4,4)
+    user.angle = math.random()*math.pi*2
+    user.hp = 10
+    user.dead = nil
+  end
+
   server.world = server.bump.newWorld(50)
 
   for i,v in pairs(map) do
@@ -106,6 +114,14 @@ function server.update(dt)
   end
 
   for _,user in pairs(server_data.lovernet:getUsers()) do
+
+    if user.hp and user.hp <= 0 then
+      user.dead = user.dead and user.dead - dt or 5
+      if user.dead <= 0 then
+        server_data.lovernet._reset_player(user)
+      end
+    end
+
     if user.x and user.y then
 
       if not server.world:hasItem(user) then

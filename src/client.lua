@@ -229,6 +229,13 @@ function client.draw()
     love.graphics.printf("HP:"..(client_data.hp or "?"),0,love.graphics.getHeight()-32,
       love.graphics.getWidth(),"right")
 
+    if client_data.hp and client_data.hp <= 0 then
+      love.graphics.printf("You are dead. Respawning ...",
+        0,love.graphics.getHeight()/2,
+        love.graphics.getWidth(),"center"
+      )
+    end
+
   end
 
 end
