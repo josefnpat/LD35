@@ -94,7 +94,11 @@ function client.stop()
   music.menu:play()
 end
 
+t = 0
+
 function client.update(dt)
+
+  t = t + dt
 
   client_data.move = 0
   client_data.move = client_data.move + ( love.keyboard.isDown("w") and 1 or 0 )
@@ -153,7 +157,8 @@ function client.update(dt)
           dev.ent = client_data.vividcast.entity.new()
           dev.ent:setTexture(function(this,angle)
             if this._walking then
-              return client_data.sprites.walk[calc_direction(angle)][1]
+              local index = math.floor(t*4)%#client_data.sprites.walk[1] + 1
+              return client_data.sprites.walk[calc_direction(angle)][index]
             else
               return client_data.sprites.stand[calc_direction(angle)]
             end
@@ -165,7 +170,7 @@ function client.update(dt)
         client_data.users[v.name].ent:setX(v.x+0.4)
         client_data.users[v.name].ent:setY(v.y+0.4)
         client_data.users[v.name].ent:setAngle(v.a)
-        client_data.users[v.name].ent._walking = v.m == 1 or v.s == 1
+        client_data.users[v.name].ent._walking = v.m ~= 0 or v.s ~= 0
 
       end
 
