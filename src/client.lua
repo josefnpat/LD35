@@ -71,7 +71,7 @@ function client.start(args)
   client_data.name = args.name or "Peasant"..math.random(1000,9999)
 
   client_data.move,client_data.strafe,client_data.angle = 0,0,0
-  args.port = 3535
+  args.port = default_port
   args.transmitRate = 1/24
 
   -- Connects to localhost by default

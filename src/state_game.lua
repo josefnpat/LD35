@@ -29,7 +29,7 @@ function game:enter()
 
   demo_name = nil
   demo_ip = "50.116.63.25"
-  demo_port = "3535"
+  demo_port = default_port
 
   options = {
     {

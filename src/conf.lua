@@ -1,6 +1,7 @@
 headless = false
 scale = 10
 max_health = 10
+default_port = 35350
 
 function love.conf(t)
 

@@ -4,7 +4,7 @@ server.bump = require "bump"
 
 function server.start()
   server_data = {}
-  server_data.lovernet = lovernetlib.new({type=lovernetlib.mode.server,port=3535})
+  server_data.lovernet = lovernetlib.new({type=lovernetlib.mode.server,port=default_port})
 
   server_data.lovernet._reset_player = function(user)
     user.x = math.random(-3,3)
