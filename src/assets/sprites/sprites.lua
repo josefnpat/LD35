@@ -28,5 +28,14 @@ return function(conv)
       sprites.shoot[i][j] = conv(love.graphics.newQuad((j-1)*64,(i+5)*64,64,64,1024,1024))
     end
   end
+
+  sprites.weapon_quads = {}
+  for i = 1,2 do
+    sprites.weapon_quads[i] = {}
+    for j = 1,5 do
+      sprites.weapon_quads[i][j] = love.graphics.newQuad((j-1)*64,(i-1)*32,64,32,320,64)
+    end
+  end
+
   return sprites
 end

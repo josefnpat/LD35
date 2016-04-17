@@ -3,6 +3,9 @@ sprites = require "sprites"()
 sheet = love.graphics.newImage("sprites.png")
 sheet:setFilter("nearest")
 
+weapons = love.graphics.newImage("weapons.png")
+weapons:setFilter("nearest")
+
 t = 0
 
 walkframes = 4
@@ -12,6 +15,13 @@ function love.draw()
   local animindex = math.floor(t)%walkframes+1
   love.graphics.rectangle("line",0,0,scale*64,scale*64)
   love.graphics.draw(sheet,sprites.stand[dirindex],0,0,0,scale,scale)
+
+  local weaponindex = math.floor(t)%5+1
+  for i,v in pairs(sprites.weapon_quads) do
+    love.graphics.rectangle("line",64*scale*i,0,64*scale,32*scale)
+    love.graphics.draw(weapons,v[weaponindex],64*scale*i,0,0,scale,scale)
+  end
+
   for i = 1,8 do
     local x = (i-1)*scale*64
     local y = 64*scale
