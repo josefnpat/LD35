@@ -23,6 +23,10 @@ function splash:enter()
   enp:setImage(love.graphics.newImage("assets/splash/enp.png"))
   table.insert(self._splashes,enp)
 
+  local bd = splashclass.new()
+  bd:setImage(love.graphics.newImage("assets/splash/bd.png"))
+  table.insert(self._splashes,bd)
+
   self._current = 1
 
 end
