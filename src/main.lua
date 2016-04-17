@@ -11,5 +11,9 @@ splashclass = require "splashclass"
 
 function love.load()
   hump.gamestate.registerEvents()
-  hump.gamestate.switch(gamestates.splash)
+  if headless then
+    hump.gamestate.switch(gamestates.game)
+  else
+    hump.gamestate.switch(gamestates.splash)
+  end
 end
