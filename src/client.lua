@@ -20,7 +20,7 @@ function client.start(args)
 
   client_data.sprites = require "assets.sprites.sprites"(extract)
 
-  client_data.sheet = love.graphics.newImage("assets/sprites/sprites.png")
+  all  = nil
 
   client_data.level = client_data.vividcast.level.new()
   client_data.level:setMapCallback(function(x,y)
