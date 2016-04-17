@@ -94,7 +94,7 @@ function server.update(dt)
       if bullet.owner ~= user then
         if distance(bullet,user) < 0.4 then
           hit_player = true
-          user.hp = (user.hp or max_health) - 1
+          user.hp = math.max(0, (user.hp or max_health) - 1)
           break
         end
       end

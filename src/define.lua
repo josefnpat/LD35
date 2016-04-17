@@ -47,10 +47,16 @@ return function(l)
   -- Store the position of the user in the user data
   l:addProcessOnServer('m',function(self,peer,arg,storage)
     local user = self:getUser(peer)
-    user.x = user.x or 0
-    user.y = user.y or 0
-    user.move = arg.m
-    user.strafe = arg.s
+    user.x = user.x or math.random(-1,1)
+    user.y = user.y or math.random(-1,1)
+    user.hp = user.hp or 10
+    if user.hp > 0 then
+      user.move = arg.m
+      user.strafe = arg.s
+    else
+      user.move = 0
+      user.strafe = 0
+    end
     user.angle = arg.a
     return {x=user.x,y=user.x}
   end)
@@ -72,6 +78,7 @@ return function(l)
           y=v.y,
           c = v == user and true or nil,
           hp = v == user and (user.hp or max_health) or nil,
+          d = user.hp == 0 and true or nil,
         })
       end
     end
@@ -97,15 +104,17 @@ return function(l)
   -- shoot
   l:addProcessOnServer('s',function(self,peer,arg,storage)
     local user = self:getUser(peer)
-    storage = storage or {}
-    storage.bullets = storage.bullets or {}
-    table.insert(storage.bullets,{
-      age = 1,
-      x=user.x,
-      y=user.y,
-      angle=user.angle,
-      owner=user,
-    })
+    if user.hp > 0 then
+      storage = storage or {}
+      storage.bullets = storage.bullets or {}
+      table.insert(storage.bullets,{
+        age = 1,
+        x=user.x,
+        y=user.y,
+        angle=user.angle,
+        owner=user,
+      })
+    end
   end)
 
 end
