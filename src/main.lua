@@ -12,12 +12,12 @@ function love.load()
 
   music = {
     menu = love.audio.newSource("assets/music/menu.ogg"),
+    game_intro = love.audio.newSource("assets/music/game_intro.ogg"),
     game = love.audio.newSource("assets/music/game.ogg"),
   }
 
-  for _,song in pairs(music) do
-    song:setLooping(true)
-  end
+  music.menu:setLooping(true)
+  music.game:setLooping(true)
 
   music.menu:play()
 
@@ -42,7 +42,7 @@ function love.load()
       action = function()
         client.start{ip=demo_ip,name=demo_name}
         music.menu:stop()
-        music.game:play()
+        music.game_intro:play()
       end,
     },
     {

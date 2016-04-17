@@ -96,12 +96,17 @@ function client.stop()
   client_data = nil
 
   music.game:stop()
+  music.game_intro:stop()
   music.menu:play()
 end
 
 t = 0
 
 function client.update(dt)
+
+  if not music.game:isPlaying() then
+    music.game_intro:play()
+  end
 
   t = t + dt
 
