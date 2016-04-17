@@ -52,15 +52,15 @@ function splash:update(dt)
 end
 
 function splash:keypressed()
-  self._splashes[self._current]:stop()
+  if self._splashes[self._current] then
+    self._splashes[self._current]:stop()
+  end
 end
 
 function splash:mousepressed()
-  self._splashes[self._current]:stop()
-end
-
-function splash:touchpressed()
-  self._splashes[self._current]:stop()
+  if self._splashes[self._current] then
+    self._splashes[self._current]:stop()
+  end
 end
 
 return splash
