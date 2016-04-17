@@ -96,17 +96,30 @@ function love.draw()
   if client_data then client.draw() end
   if server_data then server.draw() end
 
-  if debug_mode then
+  if fps_mode then
     love.graphics.printf(love.timer.getFPS(),0,0,
       love.graphics.getWidth(),"right")
   end
 
 end
 
+debug_mode = false
+raycast_mode = true
+fps_mode = false
+
 function love.keypressed(key)
 
   if key == "`" then
     debug_mode = not debug_mode
+  end
+
+  if key == "1" then
+    raycast_mode = not raycast_mode
+    print("raycast:",raycast_mode)
+  end
+
+  if key == "f" then
+    fps_mode = not fps_mode
   end
 
   if not client_data then

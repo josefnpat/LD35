@@ -1,5 +1,9 @@
 local client = {}
 
+local calc_direction = function(angle)
+  return math.floor(((angle+math.pi/8)/(math.pi*2))*8)%8+1
+end
+
 function client.start(args)
 
   client_data = {}
@@ -19,8 +23,6 @@ function client.start(args)
   end
 
   client_data.sprites = require "assets.sprites.sprites"(extract)
-
-  all  = nil
 
   client_data.level = client_data.vividcast.level.new()
   client_data.level:setMapCallback(function(x,y)
@@ -51,20 +53,8 @@ function client.start(args)
     return love.graphics.newImage(s)
   end
 
-  local calc_direction = function(angle)
-    return math.floor(((angle+math.pi/8)/(math.pi*2))*8)%8+1
-  end
 
-  dev = {}
-  dev.ent = client_data.vividcast.entity.new()
-  dev.ent:setX(1)
-  dev.ent:setY(0)
-  dev.ent:setAngle(1)
-  dev.ent:setTexture(function(this,angle)
-    return client_data.sprites.stand[calc_direction(angle)]
-  end)
-
-  client_data.level:addEntity(dev.ent)
+  client_data.users = {}
 
   client_data.level:addEntity(client_data.player)
 
@@ -76,7 +66,7 @@ function client.start(args)
   client_data.name = args.name or "Peasant"..math.random(1000,9999)
 
   client_data.move,client_data.strafe,client_data.angle = 0,0,0
-  args.port = "3535"
+  args.port = 3535
   args.transmitRate = 1/24
 
   -- Connects to localhost by default
@@ -146,19 +136,37 @@ function client.update(dt)
   end
 
   if client_data.lovernet:getCache("p") then
+
     for i,v in pairs(client_data.lovernet:getCache("p")) do
+
       if v.c then --if current player
+
         client_data.player:setX(v.x+0.4 or 0)
         client_data.player:setY(v.y+0.4 or 0)
         client_data.player:setAngle(v.a)
+
+      else
+
+        -- Init other player
+        if client_data.users[v.name] == nil then
+          local dev = {}
+          dev.ent = client_data.vividcast.entity.new()
+          dev.ent:setTexture(function(this,angle)
+            return client_data.sprites.stand[calc_direction(angle)]
+          end)
+          client_data.level:addEntity(dev.ent)
+          client_data.users[v.name] = dev
+          -- TODO: add move and strafe
+        end
+        client_data.users[v.name].ent:setX(v.x)
+        client_data.users[v.name].ent:setY(v.y)
+        client_data.users[v.name].ent:setAngle(v.a)
+
       end
+
     end
   end
 
-
-
-
-  -- TODO: add delay timer
   -- Request a player list
   if not client_data.lovernet:hasData('p') then
     client_data.lovernet:pushData('p')
@@ -186,7 +194,9 @@ function client.draw()
   else
 
     love.graphics.draw(client_data.bg,0,0,0,scale,scale)
-    client_data.level:draw(0,0,64*scale,64*scale,scale)
+    if raycast_mode then
+      client_data.level:draw(0,0,64*scale,64*scale,scale)
+    end
 
   end
 
