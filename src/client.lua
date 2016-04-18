@@ -182,11 +182,18 @@ function client.update(dt)
             if this._dead then
               local index = math.min(math.floor(this._dead_dt),4)+1
               return client_data.sprites.death[index]
-            elseif this._walking then
-              local index = math.floor(t*4)%#client_data.sprites.walk[1] + 1
-              return client_data.sprites.walk[calc_direction(angle)][index]
             else
-              return client_data.sprites.stand[calc_direction(angle)]
+              local dir = calc_direction(angle)
+              if dir == 1 and this._shooting == 1 then
+                return client_data.sprites.shoot[1][3]
+              else
+                if this._walking then
+                  local index = math.floor(t*4)%#client_data.sprites.walk[1] + 1
+                  return client_data.sprites.walk[dir][index]
+                else
+                  return client_data.sprites.stand[dir]
+                end
+              end
             end
           end)
           client_data.level:addEntity(dev.ent)
@@ -197,6 +204,7 @@ function client.update(dt)
         client_data.users[v.name].ent:setY(v.y+0.4)
         client_data.users[v.name].ent:setAngle(v.a)
         client_data.users[v.name].ent._walking = v.m ~= 0 or v.s ~= 0
+        client_data.users[v.name].ent._shooting = v.f
         if v.dead == 1 then
           client_data.users[v.name].ent._dead = true
           client_data.users[v.name].ent._dead_dt = (client_data.users[v.name].ent._dead_dt or 0) + dt*4

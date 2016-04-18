@@ -135,6 +135,8 @@ function server.update(dt)
 
   for _,user in pairs(server_data.lovernet:getUsers()) do
 
+    user.shooting = math.max(0,(user.shooting or 0) - dt)
+
     if user.boss then
       found_boss = true
     end

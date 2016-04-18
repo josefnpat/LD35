@@ -84,6 +84,7 @@ return function(l)
           d = v.deaths or 0,
           b = v.bullets or 0,
           b = v == user and v.boss or nil,
+          f = (v.shooting and v.shooting > 0) and 1 or nil, --fire
         })
       end
     end
@@ -111,6 +112,7 @@ return function(l)
     local user = self:getUser(peer)
 
     user.reload = 0
+    user.shooting = 0.5
 
     if user.hp > 0 then
       local age = 0.1
