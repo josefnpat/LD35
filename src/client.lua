@@ -8,6 +8,11 @@ function client.start(args)
 
   client_data = {}
 
+  client_data.hp_bar = love.graphics.newImage("assets/hp_bar.png")
+  client_data.hp_bar:setFilter("nearest")
+  client_data.hp_frame = love.graphics.newImage("assets/hp_frame.png")
+  client_data.hp_frame:setFilter("nearest")
+
   client_data.shooting = 0
 
   client_data.bg = love.graphics.newImage("assets/bg.png")
@@ -237,7 +242,13 @@ function client.draw()
     love.graphics.draw(client_data.weapons,client_data.sprites.weapon_quads[weaponindex][shootindex],
       0,32*scale,0,scale,scale)
 
-    love.graphics.print("HP:"..(client_data.hp or "?"),0,0)
+    love.graphics.setScissor(0,
+      client_data.hp_bar:getHeight()*scale * (1 - ((client_data.hp or 0)/max_health)),
+      client_data.hp_bar:getWidth()*scale,
+      client_data.hp_bar:getHeight()*scale)
+    love.graphics.draw(client_data.hp_bar,0,0,0,scale)
+    love.graphics.setScissor( )
+    love.graphics.draw(client_data.hp_frame,0,0,0,scale)
 
     if client_data.bullets then
       if client_data.bullets > 0 then
