@@ -244,7 +244,6 @@ function client.draw()
         love.graphics.print(string.rep(".",client_data.bullets or 0),0,(64-6)*10)
       else
         local alpha = client_data.reload_anim/respawn_bullets*255
-        print(alpha)
         love.graphics.setColor(255,255,255,alpha)
         love.graphics.print("RELOAD",0,(64-6)*10)
         love.graphics.setColor(255,255,255)
