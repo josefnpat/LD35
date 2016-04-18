@@ -32,7 +32,7 @@ function love.update(dt)
     if not found then
       table.insert(map,{x=x,y=y})
     end
-  elseif love.keyboard.isDown("space") then --remove wall
+  elseif love.mouse.isDown(2) then
     for i,v in pairs(map) do
       if v.x == x and v.y == y then
         table.remove(map,i)
