@@ -58,6 +58,7 @@ function client.start(args)
     return love.graphics.newImage(s)
   end
 
+  client_data.reload_anim = 0
 
   client_data.users = {}
 
@@ -103,6 +104,8 @@ end
 t = 0
 
 function client.update(dt)
+
+  client_data.reload_anim = math.min(client_data.reload_anim + dt,respawn_bullets)
 
   if not music.game:isPlaying() then
     music.game_intro:play()
@@ -192,7 +195,6 @@ function client.update(dt)
           client_data.users[v.name].ent._dead = true
           client_data.users[v.name].ent._dead_dt = (client_data.users[v.name].ent._dead_dt or 0) + dt*4
         else
-          print(v.name,"clear")
           client_data.users[v.name].ent._dead = nil
           client_data.users[v.name].ent._dead_dt = nil
         end
@@ -237,7 +239,17 @@ function client.draw()
 
     love.graphics.print("HP:"..(client_data.hp or "?"),0,0)
 
-    love.graphics.print(string.rep("I",client_data.bullets or 0),0,64*10-10)
+    if client_data.bullets then
+      if client_data.bullets > 0 then
+        love.graphics.print(string.rep(".",client_data.bullets or 0),0,(64-6)*10)
+      else
+        local alpha = client_data.reload_anim/respawn_bullets*255
+        print(alpha)
+        love.graphics.setColor(255,255,255,alpha)
+        love.graphics.print("RELOAD",0,(64-6)*10)
+        love.graphics.setColor(255,255,255)
+      end
+    end
 
     if client_data.hp and client_data.hp <= 0 then
       love.graphics.setColor(255,0,0,127)
@@ -271,6 +283,7 @@ end
 
 function client.mousepressed(x,y,button)
   client_data.shooting = 1
+  client_data.reload_anim = 0
   client_data.lovernet:pushData('s')
 end
 
