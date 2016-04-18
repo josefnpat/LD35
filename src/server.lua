@@ -105,12 +105,21 @@ function server.update(dt)
       if bullet.owner ~= user then
         if distance(bullet,user) < 0.4 then
           hit_player = true
-          user.hp = math.max(0, (user.hp or max_health) - 1)
+          user.hp = bullet.owner.boss and 0 or math.max(0, (user.hp or max_health) - 1)
           if user.hp == 0 and not user.killed_by then
             user.killed_by = bullet.owner
-            bullet.owner.points = (bullet.owner.points or 0) + 1
+            -- lol ternary, eat your heart out
+            bullet.owner.points = (bullet.owner.points or 0) + (
+              bullet.owner.boss and 1 or (
+                user.boss and 10 or -1
+              )
+            )
             bullet.owner.kills = (bullet.owner.kills or 0) + 1
             user.deaths = (user.deaths or 0) + 1
+            if user.boss then
+              user.boss = nil
+              bullet.owner.boss = true
+            end
           end
           break
         end
@@ -122,7 +131,13 @@ function server.update(dt)
     end
   end
 
+  local found_boss = false
+
   for _,user in pairs(server_data.lovernet:getUsers()) do
+
+    if user.boss then
+      found_boss = true
+    end
 
     user.reload = (user.reload or 0) + dt
     if user.reload > respawn_bullets then
@@ -162,6 +177,14 @@ function server.update(dt)
 
     end
   end
+
+  if not found_boss then
+    for i,v in pairs(server_data.lovernet:getUsers()) do
+      v.boss = true
+      break
+    end
+  end
+
 end
 
 return server

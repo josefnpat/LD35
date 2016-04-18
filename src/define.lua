@@ -83,6 +83,7 @@ return function(l)
           k = v.kills or 0,
           d = v.deaths or 0,
           b = v.bullets or 0,
+          b = v == user and v.boss or nil,
         })
       end
     end
@@ -113,7 +114,7 @@ return function(l)
 
     if user.hp > 0 then
       local age = 0.1
-      if user.bullets > 0 then
+      if user.bullets > 0 and not user.boss then
         user.bullets = user.bullets - 1
         age = 1
       end

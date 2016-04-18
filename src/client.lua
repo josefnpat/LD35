@@ -166,6 +166,7 @@ function client.update(dt)
       if v.c then --if current player
 
         client_data.hp = v.hp
+        client_data.boss = v.b
         client_data.bullets = v.b
         client_data.player:setX(v.x+0.4 or 0)
         client_data.player:setY(v.y+0.4 or 0)
@@ -237,7 +238,7 @@ function client.draw()
 
     local shootindex = math.floor(client_data.shooting*5)+1
 
-    local weaponindex = client_data.bullets == 0 and 1 or 2
+    local weaponindex = client_data.boss and 1 or (client_data.bullets == 0 and 1 or 2)
 
     love.graphics.draw(client_data.weapons,client_data.sprites.weapon_quads[weaponindex][shootindex],
       0,32*scale,0,scale,scale)
@@ -250,14 +251,18 @@ function client.draw()
     love.graphics.setScissor( )
     love.graphics.draw(client_data.hp_frame,0,0,0,scale)
 
-    if client_data.bullets then
-      if client_data.bullets > 0 then
-        love.graphics.print(string.rep(".",client_data.bullets or 0),0,(64-6)*10)
-      else
-        local alpha = client_data.reload_anim/respawn_bullets*255
-        love.graphics.setColor(255,255,255,alpha)
-        love.graphics.print("RELOAD",0,(64-6)*10)
-        love.graphics.setColor(255,255,255)
+    if client_data.boss then
+      love.graphics.print("DRACULA",0,(64-6)*10)
+    else
+      if client_data.bullets then
+        if client_data.bullets > 0 then
+          love.graphics.print(string.rep(".",client_data.bullets or 0),0,(64-6)*10)
+        else
+          local alpha = client_data.reload_anim/respawn_bullets*255
+          love.graphics.setColor(255,255,255,alpha)
+          love.graphics.print("RELOAD",0,(64-6)*10)
+          love.graphics.setColor(255,255,255)
+        end
       end
     end
 
