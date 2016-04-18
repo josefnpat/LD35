@@ -134,6 +134,7 @@ function client.update(dt)
   if use_mouse then
     client_data.angle = client_data.angle + scale*dt
     love.mouse.setX(love.graphics.getWidth() / 2)
+    love.mouse.setY(love.graphics.getHeight() / 2)
   end
 
   if love.keyboard.isDown("q") then
@@ -178,6 +179,7 @@ function client.update(dt)
         client_data.player:setX(v.x+0.4 or 0)
         client_data.player:setY(v.y+0.4 or 0)
         client_data.player:setAngle(v.a)
+        client_data.dead = v.d == 1
 
         if client_data.points then
           if client_data.points + 1 == v.p then
@@ -338,14 +340,15 @@ function client.draw()
 end
 
 function client.mousepressed(x,y,button)
+  if not client_data.dead then
+    -- copy paste
+    local weaponindex = client_data.boss and 1 or (client_data.bullets == 0 and 1 or 2)
 
-  -- copy paste
-  local weaponindex = client_data.boss and 1 or (client_data.bullets == 0 and 1 or 2)
-
-  sfx.play(sfx.weapon[weaponindex])
-  client_data.shooting = 1
-  client_data.reload_anim = 0
-  client_data.lovernet:pushData('s')
+    sfx.play(sfx.weapon[weaponindex])
+    client_data.shooting = 1
+    client_data.reload_anim = 0
+    client_data.lovernet:pushData('s')
+  end
 end
 
 return client
