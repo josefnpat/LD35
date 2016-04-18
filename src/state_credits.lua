@@ -1,6 +1,6 @@
 local credits = {}
 
-local s = string.upper("\n\n\nThis game was made for Ludum Dare 35 and Low Rez Jam 2016.\n\nGamedev & Voiceovers: @josefnpat (Missing Sentinel Software)\n\nMusic & SFX: @mistrsinestr (Eternal Night Productions\n\nArtwork: @ByteDesigning")
+local s = string.upper("\n\n\nThis game was made for Ludum Dare 35 and Low Rez Jam 2016.\n\nGamedev & Voiceovers: @josefnpat (Missing Sentinel Software)\n\nMusic & SFX: @mistrsinestr (Eternal Night Productions)\n\nArtwork: @ByteDesigning")
 
 local width, wrappedtext = love.graphics.getFont():getWrap( s, 64)
 local sheight = love.graphics.getFont():getHeight()*#wrappedtext*scale
