@@ -17,7 +17,7 @@ return function(conv)
   end
 
   sprites.death = {}
-  for i = 1,5 do
+  for i = 1,2 do
     sprites.death[i] = conv(love.graphics.newQuad( (i-1)*64,64*5,64,64,1024,1024))
   end
 

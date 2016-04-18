@@ -165,12 +165,32 @@ function client.update(dt)
 
       if v.c then --if current player
 
+        if client_data.hp ~= v.hp then
+          if client_data.hp == 0 then
+            sfx.play(v.b and sfx.boss.spawn or sfx.player.spawn)
+          else
+            sfx.play(v.b and sfx.boss.hurt or sfx.player.hurt)
+          end
+        end
         client_data.hp = v.hp
         client_data.boss = v.b
         client_data.bullets = v.b
         client_data.player:setX(v.x+0.4 or 0)
         client_data.player:setY(v.y+0.4 or 0)
         client_data.player:setAngle(v.a)
+
+        if client_data.points then
+          if client_data.points + 1 == v.p then
+            sfx.play(sfx.boss.kill)
+          end
+          if client_data.points - 1 == v.p then
+            sfx.play(sfx.player.kill)
+          end
+          if client_data.points + 10 == v.p then
+            --print("You killed dracula")
+          end
+        end
+        client_data.points = v.p
 
       else
 
@@ -180,7 +200,7 @@ function client.update(dt)
           dev.ent = client_data.vividcast.entity.new()
           dev.ent:setTexture(function(this,angle)
             if this._dead then
-              local index = math.min(math.floor(this._dead_dt),4)+1
+              local index = math.min(math.floor(this._dead_dt),1)+1
               return client_data.sprites.death[index]
             else
               local dir = calc_direction(angle)

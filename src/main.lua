@@ -15,6 +15,8 @@ hump = {
   gamestate = require "gamestate"
 }
 
+sfx = require "sfx"
+
 gamestates = {
   splash = require "state_splash",
   game = require "state_game",
