@@ -83,7 +83,7 @@ return function(l)
           k = v.kills or 0,
           d = v.deaths or 0,
           b = v.bullets or 0,
-          b = v == user and v.boss or nil,
+          boss = v == user and v.boss or nil,
           f = (v.shooting and v.shooting > 0) and 1 or nil, --fire
         })
       end

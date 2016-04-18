@@ -33,6 +33,10 @@ local sfx = {
       love.audio.newSource("assets/sfx/player_kill.wav","static"),
     },
   },
+  weapon = {
+    { love.audio.newSource("assets/sfx/weapon_1.wav","static"), },
+    { love.audio.newSource("assets/sfx/weapon_2.wav","static"), },
+  },
 }
 
 sfx.play = function(i)

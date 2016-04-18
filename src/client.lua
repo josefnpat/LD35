@@ -173,7 +173,7 @@ function client.update(dt)
           end
         end
         client_data.hp = v.hp
-        client_data.boss = v.b
+        client_data.boss = v.boss
         client_data.bullets = v.b
         client_data.player:setX(v.x+0.4 or 0)
         client_data.player:setY(v.y+0.4 or 0)
@@ -279,7 +279,7 @@ function client.draw()
     love.graphics.setScissor( )
     love.graphics.draw(client_data.hp_frame,0,0,0,scale)
 
-    if client_data.boss then
+    if client_data.boss == true then
       love.graphics.print("DRACULA",0,(64-6)*10)
     else
       if client_data.bullets then
@@ -325,6 +325,11 @@ function client.draw()
 end
 
 function client.mousepressed(x,y,button)
+
+  -- copy paste
+  local weaponindex = client_data.boss and 1 or (client_data.bullets == 0 and 1 or 2)
+
+  sfx.play(sfx.weapon[weaponindex])
   client_data.shooting = 1
   client_data.reload_anim = 0
   client_data.lovernet:pushData('s')
