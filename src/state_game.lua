@@ -38,6 +38,8 @@ function game:enter()
         client.start{ip=demo_ip,name=demo_name}
         music.menu:stop()
         music.game_intro:play()
+
+        love.mouse.setRelativeMode(true)
       end,
     },
     {
@@ -168,6 +170,8 @@ function game:keypressed(key)
   if key == "escape" then
     if client_data then
       client.stop()
+
+      love.mouse.setRelativeMode(false)
     --elseif server_data then
       --server.stop()
     else
@@ -190,6 +194,12 @@ end
 function game:mousepressed(x,y,button)
   if client_data then
     client.mousepressed(x,y,button)
+  end
+end
+
+function game:mousemoved(x,y,dx,dy)
+  if client_data then
+    client.mousemoved(x,y,dx,dy)
   end
 end
 

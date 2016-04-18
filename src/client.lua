@@ -130,12 +130,6 @@ function client.update(dt)
 
   local offset = love.mouse.getX() - love.graphics.getWidth() / 2
   local scale = (offset / (love.graphics.getWidth() / 2)) * 20
-  use_mouse = love.window.hasFocus()
-  if use_mouse then
-    client_data.angle = client_data.angle + scale*dt
-    love.mouse.setX(love.graphics.getWidth() / 2)
-    love.mouse.setY(love.graphics.getHeight() / 2)
-  end
 
   if love.keyboard.isDown("q") then
     client_data.angle = client_data.angle - 0.1
@@ -337,6 +331,12 @@ function client.draw()
 
   end
 
+end
+
+function client.mousemoved(x,y,dx,dy)
+  if love.window.hasFocus() then
+    client_data.angle = client_data.angle+dx/250
+  end
 end
 
 function client.mousepressed(x,y,button)
