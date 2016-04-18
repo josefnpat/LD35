@@ -76,7 +76,7 @@ function server.draw()
 end
 
 local distance = function(a,b)
-  return math.sqrt( (a.x - b.x)^2 + (a.y - b.y)^2 )
+  return math.sqrt( ((a.x or 0)  - (b.x or 0))^2 + ((a.y or 0) - (b.y or 0))^2 )
 end
 
 function server.update(dt)
