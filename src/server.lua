@@ -15,7 +15,7 @@ function server.start()
       user.hp = max_health
       user.dead = nil -- respawn timer on server
       user.killed_by = nil
-      user.bullets = 6
+      user.bullets = max_bullets
     end
 
     server.world = server.bump.newWorld(50)
@@ -123,6 +123,11 @@ function server.update(dt)
   end
 
   for _,user in pairs(server_data.lovernet:getUsers()) do
+
+    user.reload = (user.reload or 0) + dt
+    if user.reload > respawn_bullets then
+      user.bullets = max_bullets
+    end
 
     if user.hp and user.hp <= 0 then
       user.dead = user.dead and user.dead - dt or 2

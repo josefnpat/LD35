@@ -109,6 +109,8 @@ return function(l)
   l:addProcessOnServer('s',function(self,peer,arg,storage)
     local user = self:getUser(peer)
 
+    user.reload = 0
+
     if user.hp > 0 then
       local age = 0.1
       if user.bullets > 0 then

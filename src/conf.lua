@@ -1,8 +1,12 @@
 headless = false
 scale = 10
-max_health = 4
 default_port = 35350
 default_username = "CLONE"
+
+-- server config info
+max_health = 4
+max_bullets = 6
+respawn_bullets = 2
 
 function love.conf(t)
 
