@@ -23,6 +23,7 @@ function love.conf(t)
     t.window = false
     t.modules.graphics = false
     t.modules.window = false
+    t.modules.audio = false
   else
     t.window.title = "Dracul64"
     t.window.width = 64*scale

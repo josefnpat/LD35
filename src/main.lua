@@ -17,14 +17,15 @@ hump = {
   gamestate = require "gamestate"
 }
 
-sfx = require "sfx"
+gamestates = {}
+if not headless then
+  sfx = require "sfx"
 
-gamestates = {
-  splash = require "state_splash",
-  story = require "state_story",
-  game = require "state_game",
-  credits = require "state_credits"
-}
+  gamestates.splash = require "state_splash"
+  gamestates.story = require "state_story"
+  gamestates.credits = require "state_credits"
+end
+gamestates.game = require "state_game"
 
 splashclass = require "splashclass"
 
