@@ -30,7 +30,7 @@ function love.draw()
       0,scale,scale)
   end
 
-  local deathindex = math.floor(t)%5+1
+  local deathindex = math.floor(t)%2+1
   love.graphics.rectangle("line",0,64*2*scale,64*scale,64*scale)
   love.graphics.draw(sheet,sprites.death[deathindex],
     0,64*2*scale,0,scale,scale)
