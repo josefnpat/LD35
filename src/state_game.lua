@@ -69,7 +69,9 @@ function game:enter()
     },
     {
       name = function() return "CREDITS" end,
-      action = function() end,
+      action = function()
+        hump.gamestate.switch(gamestates.credits)
+      end,
     },
     {
       name = function() return "QUIT" end,

@@ -47,7 +47,7 @@ end
 
 function splash:update(dt)
   if self._splashes[self._current] == nil then
-    hump.gamestate.switch(gamestates.game)
+    hump.gamestate.switch(gamestates.story)
   elseif self._splashes[self._current]:done() then
     self._current=self._current+1
   else

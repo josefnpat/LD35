@@ -21,7 +21,9 @@ sfx = require "sfx"
 
 gamestates = {
   splash = require "state_splash",
+  story = require "state_story",
   game = require "state_game",
+  credits = require "state_credits"
 }
 
 splashclass = require "splashclass"
