@@ -232,10 +232,23 @@ function client.update(dt)
           client_data.users[v.name].ent._dead = nil
           client_data.users[v.name].ent._dead_dt = nil
         end
+
+        client_data.users[v.name].last_update = 0
       end
 
     end
+
   end
+
+  for i,v in pairs(client_data.users) do
+    v.last_update = (v.last_update or 0) + dt
+    if v.last_update > 0.5 then
+      client_data.users[i] = nil
+      client_data.level:removeEntity(v.ent)
+    end
+  end
+  client_data.level:removeEntity()
+
 
   -- Request a player list
   if not client_data.lovernet:hasData('p') then

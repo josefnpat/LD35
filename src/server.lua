@@ -29,6 +29,8 @@ function server.start()
     server_data = nil
   end
 
+  world_users = {}
+
 end
 
 function server.stop()
@@ -157,7 +159,7 @@ function server.update(dt)
 
       if not server.world:hasItem(user) then
         server.world:add(user,user.x,user.y,0.8,0.8)
-        --TODO remove disconnected users
+        table.insert(world_users,user)
       end
 
       speed = 4
@@ -184,6 +186,20 @@ function server.update(dt)
     for i,v in pairs(server_data.lovernet:getUsers()) do
       v.boss = true
       break
+    end
+  end
+
+  for iwuser,wuser in pairs(world_users) do
+    local found_wuser = false
+    for _,user in pairs(server_data.lovernet:getUsers()) do
+      if wuser == user then
+        found_wuser = true
+        break
+      end
+    end
+    if not found_wuser then
+      server.world:remove(wuser)
+      table.remove(world_users,iwuser)
     end
   end
 
